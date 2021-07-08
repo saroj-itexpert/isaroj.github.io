@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Basics</title>
+    <style>
+        .main{
+            text-align: center;
+        }
+
+        img{
+            border-radius: 50%;
+
+        }
+
+        .loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: block;
+    margin:15px auto;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .loader::after,
+  .loader::before {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #FF3D00;
+    width: 16px;
+    height: 16px;
+    transform: translate(-50%, 50%);
+    border-radius: 50%;
+  }
+  .loader::before {
+    left: auto;
+    right: 0;
+    background: #FFF;
+    transform: translate(50%, 100%);
+  }
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+    </style>
+</head>
+<body>
+    <span class="loader">    </span>
+    <div class="main" id="main-data" hidden>
+        <img
+            id="avatar"
+            width="100"
+            height="100"
+          
+        >
+        <h2 id="name"></h2>
+        <p>Bio: <i id="bio-status"></i></p>
+        <p>Followers: <b id="followersCount">5</b> </p>
+       <p>Check me out on <a id="githubLink" target="_blank">Github</a> </p>
+       <a class="twitter-timeline" data-width="400" data-height="600" data-theme="dark" href="https://twitter.com/whoami993?ref_src=twsrc%5Etfw">Tweets by whoami993</a>
+       <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+    </div>
+
+  
+
+    <script>
+        fetch("https://api.github.com/users/saroj-itexpert")
+            .then(response => response.json())
+            .then(function(data){
+                console.log(data)
+                document.getElementById("avatar").src = data['avatar_url'];
+                document.getElementById("name").textContent = data['name'];
+                document.getElementById("bio-status").textContent = data['bio'];
+                let followersCount = data['followers'];
+                let followersInfo = `You are followed by ${followersCount} users.`
+                document.getElementById("followersCount").textContent = followersInfo;
+                document.getElementById("githubLink").href = data['html_url']
+            })
+
+            document.getElementById("main-data").hidden = false;
+            document.getElementsByClassName("loading").hidden = true;
+    </script>
+</body>
+</html>
